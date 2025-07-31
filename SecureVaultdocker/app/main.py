@@ -21,16 +21,19 @@ def get_db():
 
 @app.post('/register')
 def register_user(user: schema.Userdata, db: Session = Depends(get_db)):
-    new_user = model.User(
+    try:
+        new_user = model.User(
         username=user.username,
         password=hashing.Hash.bcrypt(user.password),
         role = 'user'  
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return {"message": "User registered successfully"}
-
+        )
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return {"message": "User registered successfully"}
+    except Exception as e:
+        print(e)
+        return {"message": str(e)}
 
 @app.post('/login')
 def login_user(request: schema.login, db: Session = Depends(get_db)):
