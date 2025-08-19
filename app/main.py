@@ -18,7 +18,10 @@ def get_db():
     finally:
         db.close()
 
-
+@app.post('/Moba')
+def changes():
+    return {"message" : "This was added using terminal of mobaXterm"
+     
 @app.post('/register')
 def register_user(user: schema.Userdata, db: Session = Depends(get_db)):
     try:
